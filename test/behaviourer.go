@@ -17,12 +17,17 @@ func (b *Behaviourer) Init() {
 	})
 	root := gobehaviortree.NewRoot()
 
-	seq := gobehaviortree.NewSequence()
 	action1 := NewAction1()
 	action2 := NewAction2()
-	seq.AddNodes(action1, action2)
 
-	root.AddNode(seq)
+	selector := gobehaviortree.NewSelector()
+
+	seq := gobehaviortree.NewSequence()
+	seq.AddNodes(action2, action1)
+
+	selector.AddNodes(action2, seq, action1)
+
+	root.AddNode(selector)
 	b.executor.SetRoot(root)
 }
 
