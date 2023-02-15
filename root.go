@@ -68,8 +68,8 @@ func (r *Root) SetParent(parent BaseNode) {
 }
 
 //SetTree settree
-func (r *Root) SetTree(t *Tree) {
-	r.owner = t
+func (r *Root) SetTree(tree *Tree) {
+	r.owner = tree
 }
 
 //IsInit isinit?

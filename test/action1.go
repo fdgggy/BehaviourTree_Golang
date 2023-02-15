@@ -41,9 +41,9 @@ func (a *Action1) SetChildCount(count int) {
 func (a *Action1) SetInit(init bool) {
 	fmt.Println("Action1 SetInit")
 }
-func (a *Action1) SetParent(p gobehaviortree.BaseNode) {
+func (a *Action1) SetParent(parent gobehaviortree.BaseNode) {
 	fmt.Println("Action1 SetParent")
-	a.Parent = p
+	a.Parent = parent
 }
 
 func (a *Action1) SetIdx(idx int) {
