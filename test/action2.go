@@ -60,3 +60,6 @@ func (a *Action2) WhoAmI() string {
 func (a *Action2) Print() {
 	fmt.Printf("Owner:%s IdxInParent:%d HasInit:%t ParentName:%s\n\n", a.Name, a.IdxInParent, a.HasInit, a.Parent.WhoAmI())
 }
+
+func (a *Action2) OnChildrenFinish(result gobehaviortree.Result, childIdx int, owner string) {
+}

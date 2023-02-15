@@ -61,11 +61,15 @@ func (a *AINode) SendParentResult(exitNode BaseNode, result Result) {
 	}
 }
 
-//OnChildrenFinish don't delete
-func (a *AINode) OnChildrenFinish(result Result, childIdx int, owner string) {
-}
-
 //SetTree don't delete
 func (a *AINode) SetTree(tree *Tree) {
 	a.Tree = tree
+}
+
+func (a *AINode) SetIdx(idx int) {
+	a.IdxInParent = idx
+}
+
+func (a *AINode) WhoAmI() string {
+	return a.Name
 }
