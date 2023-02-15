@@ -1,32 +1,39 @@
 package gobehaviortree
 
-import (
-	"fmt"
+type (
+	OnExecTreeFunc func(tree *Tree)
+	OnTreeChildrenFinishFunc func(tree *Tree, result Result, childrenIdx int, owner string)
 )
 
 //Tree tree describe
 type Tree struct {
-	root Root
+	root *Root
+	onExec OnExecTreeFunc
+	onChildrenFinish OnTreeChildrenFinishFunc
 }
 
 //NewTree new tree
-func NewTree() *Tree {
-	return &Tree{}
+func NewTree(onExec OnExecTreeFunc, onChildrenFinish OnTreeChildrenFinishFunc) *Tree {
+	return &Tree{
+		onExec: onExec,
+		onChildrenFinish: onChildrenFinish,
+	}
 }
 
 //SetRoot setroot
-func (t *Tree) SetRoot(node Root) {
+func (t *Tree) SetRoot(node *Root) {
 	t.root = node
 	t.root.SetTree(t)
 }
 
 //Run run
 func (t *Tree) Run() {
-	t.excuser()
+	t.exec()
 }
 
-func (t *Tree) excuser() {
-	fmt.Println("tree excuser")
+func (t *Tree) exec() {
+	t.emitOnExec()
+
 	if t.root.IsInit() == false {
 		t.root.OnInstall()
 	}
@@ -34,7 +41,17 @@ func (t *Tree) excuser() {
 	t.root.OnEnter()
 }
 
+func (t *Tree) emitOnExec() {
+	if t.onExec == nil {
+		return
+	}
+	t.onExec(t)
+}
+
 //OnChildrenFinish chidren finished
-func (t *Tree) OnChildrenFinish(result Result, childrenIndex int, owner string) {
-	fmt.Printf("node:%s run over!\n", owner)
+func (t *Tree) EmitOnChildrenFinish(result Result, childrenIdx int, owner string) {
+	if t.onChildrenFinish == nil {
+		return
+	}
+	t.onChildrenFinish(t, result, childrenIdx, owner)
 }

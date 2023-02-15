@@ -11,16 +11,16 @@ type Action1 struct {
 
 func NewAction1() *Action1 {
 	return &Action1{
-		gobehaviortree.AINode{Owner: "action1"},
+		gobehaviortree.AINode{Name: "action1"},
 	}
 }
 func (a *Action1) OnInstall() {
 	fmt.Println("Action1 OnInstall")
-	a.IsAlInit = true
+	a.HasInit = true
 }
 func (a *Action1) OnUninstall() {
 	fmt.Println("Action1 OnUninstall")
-	a.IsAlInit = false
+	a.HasInit = false
 }
 func (a *Action1) OnEnter() {
 	fmt.Println("Action1 OnEnter")
@@ -43,16 +43,16 @@ func (a *Action1) SetParent(p gobehaviortree.BaseNode) {
 	a.Parent = p
 }
 
-func (a *Action1) SetIndex(index int) {
-	a.IdxInParent = index
+func (a *Action1) SetIdx(idx int) {
+	a.IdxInParent = idx
 }
 
-func (a *Action1) IsInit() (init bool) {
-	return a.IsAlInit
+func (a *Action1) IsInit() bool {
+	return a.HasInit
 }
-func (a *Action1) WhoAmI() (am string) {
-	return a.Owner
+func (a *Action1) WhoAmI() string {
+	return a.Name
 }
-func (a *Action1) ToString() {
-	fmt.Printf("Owner:%s IdxInParent:%d IsAlInit:%t ParentName:%s\n\n", a.Owner, a.IdxInParent, a.IsAlInit, a.Parent.WhoAmI())
+func (a *Action1) Print() {
+	fmt.Printf("Owner:%s IdxInParent:%d HasInit:%t ParentName:%s\n\n", a.Name, a.IdxInParent, a.HasInit, a.Parent.WhoAmI())
 }
