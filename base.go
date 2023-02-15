@@ -73,3 +73,7 @@ func (a *AINode) SetIdx(idx int) {
 func (a *AINode) WhoAmI() string {
 	return a.Name
 }
+
+func (a *AINode) SetParent(parent BaseNode) {
+	a.Parent = parent
+}
