@@ -25,9 +25,9 @@ func (a *Action1) OnUninstall() {
 	a.HasInit = false
 }
 
-func (a *Action1) OnEnter() {
+func (a *Action1) OnEnter() gobehaviortree.Result {
 	fmt.Println("Action1 OnEnter")
-	a.SendParentResult(a, gobehaviortree.ResultSuccess)
+	return gobehaviortree.ResultSuccess
 }
 
 func (a *Action1) OnExit() {
@@ -62,5 +62,5 @@ func (a *Action1) Print() {
 	fmt.Printf("Owner:%s IdxInParent:%d HasInit:%t ParentName:%s\n\n", a.Name, a.IdxInParent, a.HasInit, a.Parent.WhoAmI())
 }
 
-func (a *Action1) OnChildrenFinish(result gobehaviortree.Result, childIdx int, owner string) {
+func (a *Action1) OnChildFinish(result gobehaviortree.Result, childIdx int, owner string) {
 }

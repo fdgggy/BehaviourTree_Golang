@@ -4,6 +4,7 @@ package gobehaviortree
 type Root struct {
 	AINode
 	owner *Tree
+	onChildFinish func(root *Root, result Result, child BaseNode)
 }
 
 //NewRoot Root
@@ -17,6 +18,7 @@ func (r *Root) AddNode(node BaseNode) {
 	node.SetParent(r)
 	r.nodeList = append(r.nodeList, node)
 	r.ChildCount = 1
+	node.OnInstall()
 }
 
 //OnInstall install
@@ -25,17 +27,17 @@ func (r *Root) OnInstall() {
 }
 
 //OnEnter enter
-func (r *Root) OnEnter() {
+func (r *Root) OnEnter() Result {
 	if len(r.nodeList) == 0 {
-		return
+		return ResultSuccess
 	}
-	r.curNode = r.nodeList[0]
-	r.ExecNode(r.curNode)
-}
-
-//OnChildrenFinish children finish
-func (r *Root) OnChildrenFinish(result Result, childrenIdx int, owner string) {
-	r.owner.EmitOnChildrenFinish(result, childrenIdx, owner)
+	r.curNodeIdx = 0
+	r.curNode = r.nodeList[r.curNodeIdx]
+	res := r.curNode.OnEnter()
+	if r.onChildFinish != nil {
+		r.onChildFinish(r, res, r.curNode)
+	}
+	return res
 }
 
 //OnExit exit

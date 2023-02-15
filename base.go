@@ -21,11 +21,8 @@ type BaseNode interface {
 
 	OnInstall()
 	OnUninstall()
-	OnEnter()
+	OnEnter() Result
 	OnExit()
-	ExecNode(child BaseNode)
-	SendParentResult(exitNode BaseNode, result Result)
-	OnChildrenFinish(result Result, childIdx int, childrenOwnerName string)
 }
 
 //AINode node describe
@@ -35,30 +32,10 @@ type AINode struct {
 	Parent      BaseNode
 	nodeList    []BaseNode
 	curNode     BaseNode
+	curNodeIdx  int
 	IdxInParent int
 	Name   		string
 	Tree   		*Tree
-}
-
-//ExecNode excuse a node
-func (a *AINode) ExecNode(child BaseNode) {
-	if child == nil {
-		return
-	}
-
-	if !child.IsInit() {
-		child.OnInstall()
-	}
-
-	child.OnEnter()
-}
-
-//SendParentResult send to him parent
-func (a *AINode) SendParentResult(exitNode BaseNode, result Result) {
-	exitNode.OnExit()
-	if a.Parent != nil {
-		a.Parent.OnChildrenFinish(result, a.IdxInParent, a.Name)
-	}
 }
 
 //SetTree don't delete

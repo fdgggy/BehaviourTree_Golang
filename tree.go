@@ -2,21 +2,21 @@ package gobehaviortree
 
 type (
 	OnExecTreeFunc func(tree *Tree)
-	OnTreeChildrenFinishFunc func(tree *Tree, result Result, childrenIdx int, owner string)
+	OnTreeChildFinishFunc func(tree *Tree, result Result, root *Root)
 )
 
 //Tree tree describe
 type Tree struct {
 	root *Root
 	onExec OnExecTreeFunc
-	onChildrenFinish OnTreeChildrenFinishFunc
+	onChildFinish OnTreeChildFinishFunc
 }
 
 //NewTree new tree
-func NewTree(onExec OnExecTreeFunc, onChildrenFinish OnTreeChildrenFinishFunc) *Tree {
+func NewTree(onExec OnExecTreeFunc, onChildFinish OnTreeChildFinishFunc) *Tree {
 	return &Tree{
 		onExec: onExec,
-		onChildrenFinish: onChildrenFinish,
+		onChildFinish: onChildFinish,
 	}
 }
 
@@ -32,26 +32,16 @@ func (t *Tree) Run() {
 }
 
 func (t *Tree) exec() {
-	t.emitOnExec()
+	if t.onExec != nil {
+		t.onExec(t)
+	}
 
 	if !t.root.IsInit() {
 		t.root.OnInstall()
 	}
 
-	t.root.OnEnter()
-}
-
-func (t *Tree) emitOnExec() {
-	if t.onExec == nil {
-		return
+	res := t.root.OnEnter()
+	if t.onChildFinish != nil {
+		t.onChildFinish(t, res, t.root)
 	}
-	t.onExec(t)
-}
-
-//OnChildrenFinish chidren finished
-func (t *Tree) EmitOnChildrenFinish(result Result, childrenIdx int, owner string) {
-	if t.onChildrenFinish == nil {
-		return
-	}
-	t.onChildrenFinish(t, result, childrenIdx, owner)
 }

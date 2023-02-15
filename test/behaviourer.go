@@ -12,8 +12,8 @@ type Behaviourer struct {
 
 //Init init
 func (b *Behaviourer) Init() {
-	b.executor = gobehaviortree.NewTree(nil, func(tree *gobehaviortree.Tree, result gobehaviortree.Result, childrenIdx int, owner string) {
-		fmt.Printf("node:%s run over!\n", owner)
+	b.executor = gobehaviortree.NewTree(nil, func(tree *gobehaviortree.Tree, result gobehaviortree.Result, root *gobehaviortree.Root) {
+		fmt.Printf("node:%s run over!\n", root.WhoAmI())
 	})
 	root := gobehaviortree.NewRoot()
 

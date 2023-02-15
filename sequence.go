@@ -28,28 +28,32 @@ func (s *SequenceAINode) OnInstall() {
 }
 
 //OnEnter enter
-func (s *SequenceAINode) OnEnter() {
+func (s *SequenceAINode) OnEnter() Result {
 	if len(s.nodeList) > 0 {
-		s.curNode = s.nodeList[0]
-		s.ExecNode(s.curNode)
-	} else {
-		s.OnExit()
-		s.SendParentResult(s, ResultSuccess)
-	}
-}
+		for idx, node := range s.nodeList {
+			if s.curNode != nil && idx <= s.curNodeIdx {
+				continue
+			}
 
-//OnChildrenFinish child is done
-func (s *SequenceAINode) OnChildrenFinish(result Result, childrenIdx int, owner string) {
-	if result == ResultFailed {
-		s.SendParentResult(s, ResultFailed)
-		return
+			s.curNodeIdx = idx
+			s.curNode = node
+			res := node.OnEnter()
+			if res != ResultSuccess {
+				if res == ResultFailed || s.curNodeIdx == len(s.nodeList) {
+					s.curNodeIdx = 0
+					s.curNode = nil
+				}
+
+				s.OnExit()
+				return res
+			}
+		}
 	}
-	if childrenIdx < len(s.nodeList)-1 {
-		s.curNode = s.nodeList[childrenIdx+1]
-		s.ExecNode(s.curNode)
-	} else {
-		s.SendParentResult(s, ResultSuccess)
-	}
+
+	s.OnExit()
+	s.curNode = nil
+	s.curNodeIdx = 0
+	return ResultSuccess
 }
 
 //OnExit exit
