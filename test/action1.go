@@ -14,14 +14,17 @@ func NewAction1() *Action1 {
 		gobehaviortree.AINode{Name: "action1"},
 	}
 }
+
 func (a *Action1) OnInstall() {
 	fmt.Println("Action1 OnInstall")
 	a.HasInit = true
 }
+
 func (a *Action1) OnUninstall() {
 	fmt.Println("Action1 OnUninstall")
 	a.HasInit = false
 }
+
 func (a *Action1) OnEnter() {
 	fmt.Println("Action1 OnEnter")
 	a.SendParentResult(a, gobehaviortree.ResultSuccess)
@@ -50,9 +53,11 @@ func (a *Action1) SetIdx(idx int) {
 func (a *Action1) IsInit() bool {
 	return a.HasInit
 }
+
 func (a *Action1) WhoAmI() string {
 	return a.Name
 }
+
 func (a *Action1) Print() {
 	fmt.Printf("Owner:%s IdxInParent:%d HasInit:%t ParentName:%s\n\n", a.Name, a.IdxInParent, a.HasInit, a.Parent.WhoAmI())
 }

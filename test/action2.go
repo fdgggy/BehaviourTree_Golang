@@ -18,10 +18,12 @@ func (a *Action2) OnInstall() {
 	fmt.Println("Action2 OnInstall")
 	a.HasInit = true
 }
+
 func (a *Action2) OnUninstall() {
 	fmt.Println("Action2 OnUninstall")
 	a.HasInit = false
 }
+
 func (a *Action2) OnEnter() {
 	fmt.Println("Action2 OnEnter")
 	a.SendParentResult(a, gobehaviortree.ResultFailed)
@@ -50,9 +52,11 @@ func (a *Action2) SetIdx(idx int) {
 func (a *Action2) IsInit() bool {
 	return a.HasInit
 }
+
 func (a *Action2) WhoAmI() string {
 	return a.Name
 }
+
 func (a *Action2) Print() {
 	fmt.Printf("Owner:%s IdxInParent:%d HasInit:%t ParentName:%s\n\n", a.Name, a.IdxInParent, a.HasInit, a.Parent.WhoAmI())
 }
