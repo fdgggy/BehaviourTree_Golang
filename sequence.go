@@ -1,4 +1,4 @@
-package baseai
+package gobehaviortree
 
 import (
 	"fmt"
@@ -6,13 +6,13 @@ import (
 
 //SequenceAINode sequence node
 type SequenceAINode struct {
-	AiNode
+	AINode
 }
 
 //NewSequence construct
 func NewSequence() *SequenceAINode {
 	return &SequenceAINode{
-		AiNode: AiNode{Owner: "SequenceAINode"},
+		AINode: AINode{Owner: "SequenceAINode"},
 	}
 }
 
@@ -35,27 +35,27 @@ func (s *SequenceAINode) OnInstall() {
 func (s *SequenceAINode) OnEnter() {
 	if len(s.nodeList) > 0 {
 		s.curNode = s.nodeList[0]
-		s.ExcuserNode(s.curNode)
+		s.ExecNode(s.curNode)
 	} else {
 		s.OnExit()
-		s.SendParentResult(s, B_TRUE)
+		s.SendParentResult(s, ResultSuccess)
 	}
 }
 
 //OnChildrenFinish child is done
-func (s *SequenceAINode) OnChildrenFinish(result ResultType, childrenIndex int, owner string) {
+func (s *SequenceAINode) OnChildrenFinish(result Result, childrenIndex int, owner string) {
 	fmt.Printf("%s childNode return %d\n", owner, result)
 
-	if result == B_FALSE {
-		s.SendParentResult(s, B_FALSE)
+	if result == ResultFailed {
+		s.SendParentResult(s, ResultFailed)
 		return
 	}
 	fmt.Printf("childrenIndex:%d childCount:%d\n", childrenIndex, len(s.nodeList))
 	if childrenIndex < len(s.nodeList)-1 {
 		s.curNode = s.nodeList[childrenIndex+1]
-		s.ExcuserNode(s.curNode)
+		s.ExecNode(s.curNode)
 	} else {
-		s.SendParentResult(s, B_TRUE)
+		s.SendParentResult(s, ResultSuccess)
 	}
 }
 
@@ -64,10 +64,10 @@ func (s *SequenceAINode) OnExit() {
 	s.curNode = nil
 }
 
-//OnUnstall uninstall
-func (s *SequenceAINode) OnUnstall() {
+//OnUninstall uninstall
+func (s *SequenceAINode) OnUninstall() {
 	for _, v := range s.nodeList {
-		v.OnUnstall()
+		v.OnUninstall()
 	}
 	s.nodeList = s.nodeList[:0]
 }
@@ -92,9 +92,9 @@ func (s *SequenceAINode) IsInit() (init bool) {
 	return s.IsAlInit
 }
 
-//Tostring dump all
-func (s *SequenceAINode) Tostring() {
+//ToString dump all
+func (s *SequenceAINode) ToString() {
 	for _, v := range s.nodeList {
-		v.Tostring()
+		v.ToString()
 	}
 }

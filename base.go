@@ -1,16 +1,17 @@
-package baseai
+package gobehaviortree
 
 import (
 	"fmt"
 )
 
-//ResultType result enums
-type ResultType uint16
+//Result result enums
+type Result int
 
 const (
-	B_FALSE ResultType = iota
-	B_TRUE
-	B_RUNING
+	ResultNil Result = iota
+	ResultFailed
+	ResultSuccess
+	ResultRunning
 )
 
 //BaseNode basenode
@@ -18,21 +19,21 @@ type BaseNode interface {
 	IsInit() bool
 	SetParent(parent BaseNode)
 	SetIndex(index int)
-	Tostring()
+	ToString()
 	WhoAmI() string
 	SetTree(t *Tree)
 
 	OnInstall()
-	OnUnstall()
+	OnUninstall()
 	OnEnter()
 	OnExit()
-	ExcuserNode(child BaseNode)
-	SendParentResult(exitNode BaseNode, result ResultType)
-	OnChildrenFinish(result ResultType, childIndex int, owner string)
+	ExecNode(child BaseNode)
+	SendParentResult(exitNode BaseNode, result Result)
+	OnChildrenFinish(result Result, childIndex int, owner string)
 }
 
-//AiNode node describe
-type AiNode struct {
+//AINode node describe
+type AINode struct {
 	ChildCount  int
 	IsAlInit    bool
 	Parent      BaseNode
@@ -42,12 +43,13 @@ type AiNode struct {
 	Owner       string
 }
 
-//ExcuserNode excuse a node
-func (a *AiNode) ExcuserNode(child BaseNode) {
+//ExecNode excuse a node
+func (a *AINode) ExecNode(child BaseNode) {
 	if child == nil {
 		fmt.Println("the child node is nil!")
 		return
 	}
+
 	fmt.Printf("excuse %s node\n", child.WhoAmI())
 
 	if child.IsInit() == false {
@@ -58,7 +60,7 @@ func (a *AiNode) ExcuserNode(child BaseNode) {
 }
 
 //SendParentResult send to him parent
-func (a *AiNode) SendParentResult(exitNode BaseNode, result ResultType) {
+func (a *AINode) SendParentResult(exitNode BaseNode, result Result) {
 	exitNode.OnExit()
 
 	if a.Parent != nil {
@@ -69,9 +71,9 @@ func (a *AiNode) SendParentResult(exitNode BaseNode, result ResultType) {
 }
 
 //OnChildrenFinish don't delete
-func (a *AiNode) OnChildrenFinish(result ResultType, childIndex int, owner string) {
+func (a *AINode) OnChildrenFinish(result Result, childIndex int, owner string) {
 }
 
 //SetTree don't delete
-func (a *AiNode) SetTree(t *Tree) {
+func (a *AINode) SetTree(t *Tree) {
 }

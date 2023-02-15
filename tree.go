@@ -1,4 +1,4 @@
-package baseai
+package gobehaviortree
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 
 //Tree tree describe
 type Tree struct {
-	root Rootnode
+	root Root
 }
 
 //NewTree new tree
@@ -15,7 +15,7 @@ func NewTree() *Tree {
 }
 
 //SetRoot setroot
-func (t *Tree) SetRoot(node Rootnode) {
+func (t *Tree) SetRoot(node Root) {
 	t.root = node
 	t.root.SetTree(t)
 }
@@ -35,6 +35,6 @@ func (t *Tree) excuser() {
 }
 
 //OnChildrenFinish chidren finished
-func (t *Tree) OnChildrenFinish(result ResultType, childrenIndex int, owner string) {
+func (t *Tree) OnChildrenFinish(result Result, childrenIndex int, owner string) {
 	fmt.Printf("node:%s run over!\n", owner)
 }

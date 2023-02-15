@@ -1,20 +1,20 @@
-package behaviour
+package test
 
 import (
-	"behaviourtree/src/baseai"
+	"github.com/995933447/gobehaviortree"
 )
 
 //Behaviourer behaviourer
 type Behaviourer struct {
-	executor *baseai.Tree
+	executor *gobehaviortree.Tree
 }
 
 //Init init
 func (b *Behaviourer) Init() {
-	b.executor = baseai.NewTree()
-	root := baseai.NewRootNode()
+	b.executor = gobehaviortree.NewTree()
+	root := gobehaviortree.NewRoot()
 
-	seq := baseai.NewSequence()
+	seq := gobehaviortree.NewSequence()
 	action1 := NewAction1()
 	action2 := NewAction2()
 	seq.AddNode(action1, action2)
@@ -26,4 +26,8 @@ func (b *Behaviourer) Init() {
 //Run run
 func (b *Behaviourer) Run() {
 	b.executor.Run()
+}
+
+func NewBehaviour() *Behaviourer {
+	return &Behaviourer{}
 }
