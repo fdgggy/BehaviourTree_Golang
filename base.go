@@ -36,7 +36,8 @@ type AINode struct {
 	nodeList    []BaseNode
 	curNode     BaseNode
 	IdxInParent int
-	Name   string
+	Name   		string
+	Tree   		*Tree
 }
 
 //ExecNode excuse a node
@@ -65,5 +66,6 @@ func (a *AINode) OnChildrenFinish(result Result, childIdx int, owner string) {
 }
 
 //SetTree don't delete
-func (a *AINode) SetTree(t *Tree) {
+func (a *AINode) SetTree(tree *Tree) {
+	a.Tree = tree
 }
