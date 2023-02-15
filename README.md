@@ -1,5 +1,9 @@
-## 使用说明
+## Introduction
+AI behavior tree base on golang implement.
 
-1.go的安装环境，windows和linux都可以
+基于Golang实现的ai行为树。
 
-2.直接go run main.go即可看到效果
+## Usage
+Look at test package example.
+
+看看test包的使用例子就知道了。
