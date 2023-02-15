@@ -45,7 +45,7 @@ func (a *AINode) ExecNode(child BaseNode) {
 		return
 	}
 
-	if child.IsInit() == false {
+	if !child.IsInit() {
 		child.OnInstall()
 	}
 

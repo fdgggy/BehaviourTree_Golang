@@ -34,7 +34,7 @@ func (t *Tree) Run() {
 func (t *Tree) exec() {
 	t.emitOnExec()
 
-	if t.root.IsInit() == false {
+	if !t.root.IsInit() {
 		t.root.OnInstall()
 	}
 
