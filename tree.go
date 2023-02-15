@@ -22,8 +22,12 @@ func NewTree(onExec OnExecTreeFunc, onChildFinish OnTreeChildFinishFunc) *Tree {
 
 //SetRoot setroot
 func (t *Tree) SetRoot(node *Root) {
+	if t.root != nil {
+		t.root.OnUninstall()
+	}
 	t.root = node
 	t.root.SetTree(t)
+	t.root.OnInstall()
 }
 
 //Run run
@@ -34,10 +38,6 @@ func (t *Tree) Run() {
 func (t *Tree) exec() {
 	if t.onExec != nil {
 		t.onExec(t)
-	}
-
-	if !t.root.IsInit() {
-		t.root.OnInstall()
 	}
 
 	res := t.root.OnEnter()

@@ -1,19 +1,19 @@
 package gobehaviortree
 
 //SequenceAINode sequence node
-type SequenceAINode struct {
+type SelectAINode struct {
 	AINode
 }
 
 //NewSequence construct
-func NewSequence() *SequenceAINode {
-	return &SequenceAINode{
-		AINode: AINode{Name: "SequenceAINode"},
+func NewSelector() *SelectAINode {
+	return &SelectAINode{
+		AINode: AINode{Name: "SelectAINode"},
 	}
 }
 
 //AddNode add node
-func (s *SequenceAINode) AddNodes(nodes ...BaseNode) {
+func (s *SelectAINode) AddNodes(nodes ...BaseNode) {
 	for i, v := range nodes {
 		v.SetIdx(i)
 		v.SetParent(s)
@@ -24,24 +24,20 @@ func (s *SequenceAINode) AddNodes(nodes ...BaseNode) {
 }
 
 //OnInstall preEnter
-func (s *SequenceAINode) OnInstall() {
+func (s *SelectAINode) OnInstall() {
 }
 
 //OnEnter enter
-func (s *SequenceAINode) OnEnter() Result {
+func (s *SelectAINode) OnEnter() Result {
+	defer func() {
+		s.curNode = nil
+	}()
+
 	if len(s.nodeList) > 0 {
 		for _, node := range s.nodeList {
-			if s.curNode != nil && node.GetIdx() <= s.curNode.GetIdx() {
-				continue
-			}
-
 			s.curNode = node
 			res := node.OnEnter()
-			if res != ResultSuccess {
-				if res == ResultFailed || s.curNode.GetIdx() == len(s.nodeList) {
-					s.curNode = nil
-				}
-
+			if res != ResultFailed {
 				s.OnExit()
 				return res
 			}
@@ -49,16 +45,15 @@ func (s *SequenceAINode) OnEnter() Result {
 	}
 
 	s.OnExit()
-	s.curNode = nil
 	return ResultSuccess
 }
 
 //OnExit exit
-func (s *SequenceAINode) OnExit() {
+func (s *SelectAINode) OnExit() {
 }
 
 //OnUninstall uninstall
-func (s *SequenceAINode) OnUninstall() {
+func (s *SelectAINode) OnUninstall() {
 	for _, v := range s.nodeList {
 		v.OnUninstall()
 	}
@@ -66,23 +61,25 @@ func (s *SequenceAINode) OnUninstall() {
 }
 
 //WhoAmI return ownerself
-func (s *SequenceAINode) WhoAmI() (am string) {
+func (s *SelectAINode) WhoAmI() (am string) {
 	return s.Name
 }
 
 //SetIdx setidx
-func (s *SequenceAINode) SetIdx(idx int) {
+func (s *SelectAINode) SetIdx(idx int) {
 	s.IdxInParent = idx
 }
 
 //SetParent set parent
-func (s *SequenceAINode) SetParent(parent BaseNode) {
+func (s *SelectAINode) SetParent(parent BaseNode) {
 	s.Parent = parent
 }
 
 //Print dump all
-func (s *SequenceAINode) Print() {
+func (s *SelectAINode) Print() {
 	for _, v := range s.nodeList {
 		v.Print()
 	}
 }
+
+

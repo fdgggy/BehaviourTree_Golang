@@ -23,7 +23,6 @@ func (r *Root) AddNode(node BaseNode) {
 
 //OnInstall install
 func (r *Root) OnInstall() {
-	r.HasInit = true
 }
 
 //OnEnter enter
@@ -31,12 +30,12 @@ func (r *Root) OnEnter() Result {
 	if len(r.nodeList) == 0 {
 		return ResultSuccess
 	}
-	r.curNodeIdx = 0
-	r.curNode = r.nodeList[r.curNodeIdx]
+	r.curNode = r.nodeList[0]
 	res := r.curNode.OnEnter()
 	if r.onChildFinish != nil {
 		r.onChildFinish(r, res, r.curNode)
 	}
+	r.OnExit()
 	return res
 }
 
@@ -72,11 +71,6 @@ func (r *Root) SetParent(parent BaseNode) {
 //SetTree settree
 func (r *Root) SetTree(tree *Tree) {
 	r.owner = tree
-}
-
-//IsInit isinit?
-func (r *Root) IsInit() (init bool) {
-	return r.HasInit
 }
 
 //Print tostring

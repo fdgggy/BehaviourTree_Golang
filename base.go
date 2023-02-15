@@ -12,9 +12,9 @@ const (
 
 //BaseNode baseNode
 type BaseNode interface {
-	IsInit() bool
 	SetParent(parent BaseNode)
 	SetIdx(idx int)
+	GetIdx() int
 	Print()
 	WhoAmI() string
 	SetTree(t *Tree)
@@ -28,11 +28,9 @@ type BaseNode interface {
 //AINode node describe
 type AINode struct {
 	ChildCount  int
-	HasInit     bool
 	Parent      BaseNode
 	nodeList    []BaseNode
 	curNode     BaseNode
-	curNodeIdx  int
 	IdxInParent int
 	Name   		string
 	Tree   		*Tree
@@ -45,6 +43,10 @@ func (a *AINode) SetTree(tree *Tree) {
 
 func (a *AINode) SetIdx(idx int) {
 	a.IdxInParent = idx
+}
+
+func (a *AINode) GetIdx() int {
+	return a.IdxInParent
 }
 
 func (a *AINode) WhoAmI() string {

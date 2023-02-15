@@ -16,12 +16,10 @@ func NewAction2() *Action2 {
 }
 func (a *Action2) OnInstall() {
 	fmt.Println("Action2 OnInstall")
-	a.HasInit = true
 }
 
 func (a *Action2) OnUninstall() {
 	fmt.Println("Action2 OnUninstall")
-	a.HasInit = false
 }
 
 func (a *Action2) OnEnter() gobehaviortree.Result {
@@ -49,16 +47,12 @@ func (a *Action2) SetIdx(idx int) {
 	a.IdxInParent = idx
 }
 
-func (a *Action2) IsInit() bool {
-	return a.HasInit
-}
-
 func (a *Action2) WhoAmI() string {
 	return a.Name
 }
 
 func (a *Action2) Print() {
-	fmt.Printf("Owner:%s IdxInParent:%d HasInit:%t ParentName:%s\n\n", a.Name, a.IdxInParent, a.HasInit, a.Parent.WhoAmI())
+	fmt.Printf("Owner:%s IdxInParent:%d ParentName:%s\n\n", a.Name, a.IdxInParent, a.Parent.WhoAmI())
 }
 
 func (a *Action2) OnChildFinish(result gobehaviortree.Result, childIdx int, owner string) {
